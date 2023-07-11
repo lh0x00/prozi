@@ -1,16 +1,16 @@
 export {
   type EnhancedPromise,
-  default as Quick,
-  type QuickCallbackError,
-  type QuickDeferifyPromise,
-  type QuickDeferPromise,
-  type QuickFunctionCallback,
-  type QuickFunctionWithCallback,
-  type QuickPromiseExecuter,
-  type QuickPromiseOptions,
-  type QuickQueueItem,
-  type QuickThroatOptions,
-} from './Quick'
+  default as Prozi,
+  type ProziCallbackError,
+  type ProziDeferifyPromise,
+  type ProziDeferPromise,
+  type ProziFunctionCallback,
+  type ProziFunctionWithCallback,
+  type ProziPromiseExecuter,
+  type ProziPromiseOptions,
+  type ProziQueueItem,
+  type ProziThroatOptions,
+} from './Prozi'
 export {
   default as fastObjectProperties, 
 } from './utilities/fastObjectProperties'
