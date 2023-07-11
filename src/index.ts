@@ -1,4 +1,5 @@
 export {
+  default,
   type EnhancedPromise,
   default as Prozi,
   type ProziCallbackError,
