@@ -1,16 +1,16 @@
 export {
   type EnhancedPromise,
-  default as Quiz,
-  type QuizCallbackError,
-  type QuizDeferifyPromise,
-  type QuizDeferPromise,
-  type QuizFunctionCallback,
-  type QuizFunctionWithCallback,
-  type QuizPromiseExecuter,
-  type QuizPromiseOptions,
-  type QuizQueueItem,
-  type QuizThroatOptions,
-} from './Quiz'
+  default as Quick,
+  type QuickCallbackError,
+  type QuickDeferifyPromise,
+  type QuickDeferPromise,
+  type QuickFunctionCallback,
+  type QuickFunctionWithCallback,
+  type QuickPromiseExecuter,
+  type QuickPromiseOptions,
+  type QuickQueueItem,
+  type QuickThroatOptions,
+} from './Quick'
 export {
   default as fastObjectProperties, 
 } from './utilities/fastObjectProperties'

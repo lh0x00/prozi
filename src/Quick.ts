@@ -7,12 +7,12 @@ import {
   type PromiseType, 
 } from './types'
 
-interface QuizThroatOptions {
+interface QuickThroatOptions {
   concurrency: number
   schedule: boolean
 }
 
-interface QuizDeferPromise<T extends any> {
+interface QuickDeferPromise<T extends any> {
   cancel: EnhancedPromise<T>['cancel']
   flush: () => any
   is: {
@@ -26,19 +26,19 @@ interface QuizDeferPromise<T extends any> {
   state: 'pending' | 'rejected' | 'resolved'
 }
 
-interface QuizDeferifyPromise<T extends any, F = any>
-  extends QuizDeferPromise<T> {
+interface QuickDeferifyPromise<T extends any, F = any>
+  extends QuickDeferPromise<T> {
   forward: F
 }
 
-type QuizPromiseExecuter<T extends any> = (
+type QuickPromiseExecuter<T extends any> = (
   resolve: (value: T | PromiseLike<T>) => any,
   reject: (reason?: any) => any,
 ) => any
 
-type QuizQueueItem = () => Promise<any>
+type QuickQueueItem = () => Promise<any>
 
-interface QuizPromiseOptions {
+interface QuickPromiseOptions {
   cancelable?: boolean
   timeout?: number
 }
@@ -48,13 +48,13 @@ interface EnhancedPromise<T extends any> extends Promise<T> {
 }
 
 //
-type QuizCallbackError = Error | string | null | any | undefined
-type QuizFunctionCallback<R> = (error: QuizCallbackError, results: R) => any
-type QuizFunctionWithCallback<T extends any[], R> = (
-  ...args: [...T, QuizFunctionCallback<R>]
+type QuickCallbackError = Error | string | null | any | undefined
+type QuickFunctionCallback<R> = (error: QuickCallbackError, results: R) => any
+type QuickFunctionWithCallback<T extends any[], R> = (
+  ...args: [...T, QuickFunctionCallback<R>]
 ) => any
 
-class Quiz {
+class Quick {
   static readonly defaults = fastObjectProperties({
     concurrency: 4,
   })
@@ -66,7 +66,7 @@ class Quiz {
       // eslint-disable-next-line @typescript-eslint/no-this-alias
       const context = this
 
-      return Quiz.create(async (resolve, reject) => {
+      return Quick.create(async (resolve, reject) => {
         try {
           resolve(Promise.resolve(run.apply(context, rest)))
         } catch (error) {
@@ -79,7 +79,7 @@ class Quiz {
   static async immediate<T extends any>(
     task?: () => T | PromiseLike<T>,
   ): Promise<T> {
-    return Quiz.create((resolve, reject) => {
+    return Quick.create((resolve, reject) => {
       Promise.resolve().then(() => {
         Promise.resolve((typeof task === 'function' ? task() : null) as any)
           .then(resolve)
@@ -92,7 +92,7 @@ class Quiz {
     task?: () => T | PromiseLike<T>,
     delay = 0,
   ): Promise<T> {
-    return Quiz.create((resolve, reject) => {
+    return Quick.create((resolve, reject) => {
       setTimeout(() => {
         Promise.resolve((typeof task === 'function' ? task() : null) as any)
           .then(resolve)
@@ -104,7 +104,7 @@ class Quiz {
   static async throat<I extends any, R extends any>(
     list: I[],
     task: (item: I, idx?: number) => Promise<R>,
-    options?: Partial<QuizThroatOptions>,
+    options?: Partial<QuickThroatOptions>,
   ): Promise<R[]> {
     if (!list || !Array.isArray(list) || !('map' in list)) {
       throw new Error(
@@ -122,16 +122,16 @@ class Quiz {
     )
 
     if (opts.concurrency <= 0) {
-      throw new Error('Quiz throat required concurrency value is greater 0.')
+      throw new Error('Quick throat required concurrency value is greater 0.')
     }
 
-    return Quiz.map(list, task, opts)
+    return Quick.map(list, task, opts)
   }
 
   static async map<I extends any, R extends any>(
     list: I[],
     task: (item: I, idx?: number) => Promise<R>,
-    options?: Partial<QuizThroatOptions>,
+    options?: Partial<QuickThroatOptions>,
   ): Promise<R[]> {
     if (!list || !Array.isArray(list) || !('map' in list)) {
       throw new Error(
@@ -148,7 +148,7 @@ class Quiz {
       options,
     )
 
-    return Quiz.all(
+    return Quick.all(
       list.map(opts.concurrency > 0 ? throat(opts.concurrency, task) : task),
     )
   }
@@ -196,8 +196,8 @@ class Quiz {
   }
 
   static defer<T extends any>(
-    options?: QuizPromiseOptions,
-  ): QuizDeferPromise<T> {
+    options?: QuickPromiseOptions,
+  ): QuickDeferPromise<T> {
     const opts = Object.assign(
       {
         timeout: -1,
@@ -206,7 +206,7 @@ class Quiz {
       options,
     )
 
-    const defered = fastObjectProperties({}) as QuizDeferPromise<T>
+    const defered = fastObjectProperties({}) as QuickDeferPromise<T>
 
     defered.state = 'pending'
     defered.is = fastObjectProperties({
@@ -265,9 +265,9 @@ class Quiz {
   // eslint-disable-next-line @typescript-eslint/promise-function-async
   static run<T extends any>(
     task: () => Promise<T>,
-    options?: QuizPromiseOptions,
+    options?: QuickPromiseOptions,
   ): EnhancedPromise<T> {
-    const defered = Quiz.defer<T>(options)
+    const defered = Quick.defer<T>(options)
 
     task().then(defered.resolve).catch(defered.reject)
 
@@ -276,10 +276,10 @@ class Quiz {
 
   // eslint-disable-next-line @typescript-eslint/promise-function-async
   static create<T extends unknown>(
-    task: QuizPromiseExecuter<T>,
-    options?: QuizPromiseOptions,
+    task: QuickPromiseExecuter<T>,
+    options?: QuickPromiseOptions,
   ): EnhancedPromise<T> {
-    const defered = Quiz.defer<T>(options)
+    const defered = Quick.defer<T>(options)
 
     task(defered.resolve, defered.reject)
 
@@ -287,21 +287,21 @@ class Quiz {
   }
 
   static promisify =
-    <I extends any[], R>(wrapped: QuizFunctionWithCallback<I, R>) =>
+    <I extends any[], R>(wrapped: QuickFunctionWithCallback<I, R>) =>
     async (...args: I): Promise<R> =>
       new Promise((resolve, reject) => {
-        wrapped(...args, (error: QuizCallbackError, results: R) => {
+        wrapped(...args, (error: QuickCallbackError, results: R) => {
           error ? reject(error) : resolve(results)
         })
       })
 
   static deferify =
-    <I extends any[], R, F = any>(wrapped: QuizFunctionWithCallback<I, R>) =>
-    (...args: I): QuizDeferifyPromise<R, F> => {
-      const defer = Quiz.defer<R>()
+    <I extends any[], R, F = any>(wrapped: QuickFunctionWithCallback<I, R>) =>
+    (...args: I): QuickDeferifyPromise<R, F> => {
+      const defer = Quick.defer<R>()
 
       // @ts-expect-error
-      defer.forward = wrapped(...args, (error: QuizCallbackError, results: R) =>
+      defer.forward = wrapped(...args, (error: QuickCallbackError, results: R) =>
         error ? defer.reject(error) : defer.resolve(results))
 
       return defer as any
@@ -310,15 +310,15 @@ class Quiz {
 
 export type {
   EnhancedPromise,
-  QuizCallbackError,
-  QuizDeferifyPromise,
-  QuizDeferPromise,
-  QuizFunctionCallback,
-  QuizFunctionWithCallback,
-  QuizPromiseExecuter,
-  QuizPromiseOptions,
-  QuizQueueItem,
-  QuizThroatOptions,
+  QuickCallbackError,
+  QuickDeferifyPromise,
+  QuickDeferPromise,
+  QuickFunctionCallback,
+  QuickFunctionWithCallback,
+  QuickPromiseExecuter,
+  QuickPromiseOptions,
+  QuickQueueItem,
+  QuickThroatOptions,
 }
 
-export default Quiz
+export default Quick
