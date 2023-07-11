@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/return-await */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 
-import {
-  PromiseType,
-} from './types'
 import fastObjectProperties from './utilities/fastObjectProperties'
 import throat from './utilities/throat'
+import {
+  type PromiseType, 
+} from './types'
 
 interface QuizThroatOptions {
   concurrency: number
@@ -33,7 +33,7 @@ interface QuizDeferifyPromise<T extends any, F = any>
 
 type QuizPromiseExecuter<T extends any> = (
   resolve: (value: T | PromiseLike<T>) => any,
-  reject: (reason?: any) => any
+  reject: (reason?: any) => any,
 ) => any
 
 type QuizQueueItem = () => Promise<any>
@@ -109,7 +109,7 @@ class Quiz {
     if (!list || !Array.isArray(list) || !('map' in list)) {
       throw new Error(
         'The parameter list received is invalid,' +
-        "it's must be a list or support `map` prototype.",
+          "it's must be a list or support `map` prototype.",
       )
     }
 
@@ -136,7 +136,7 @@ class Quiz {
     if (!list || !Array.isArray(list) || !('map' in list)) {
       throw new Error(
         'The parameter list received is invalid,' +
-        "it's must be a list or support `map` prototype.",
+          "it's must be a list or support `map` prototype.",
       )
     }
 
@@ -154,9 +154,7 @@ class Quiz {
   }
 
   static async from<
-    T extends {
-      [key: string]: Promise<any>
-    }
+    T extends Record<string, Promise<any>>,
   >(
     promises: T,
   ): Promise<{
@@ -292,26 +290,23 @@ class Quiz {
 
   static promisify =
     <I extends any[], R>(wrapped: QuizFunctionWithCallback<I, R>) =>
-      async (...args: I): Promise<R> =>
-        new Promise((resolve, reject) => {
-          wrapped(...args, (error: QuizCallbackError, results: R) =>
-            error ? reject(error) : resolve(results))
-        })
+    async (...args: I): Promise<R> =>
+      new Promise((resolve, reject) => {
+        wrapped(...args, (error: QuizCallbackError, results: R) =>
+        { error ? reject(error) : resolve(results) })
+      })
 
   static deferify =
     <I extends any[], R, F = any>(wrapped: QuizFunctionWithCallback<I, R>) =>
-      (...args: I): QuizDeferifyPromise<R, F> => {
-        const defer = Quiz.defer<R>()
+    (...args: I): QuizDeferifyPromise<R, F> => {
+      const defer = Quiz.defer<R>()
 
-        // @ts-expect-error
-        defer.forward = wrapped(
-          ...args,
-          (error: QuizCallbackError, results: R) =>
-            error ? defer.reject(error) : defer.resolve(results),
-        )
+      // @ts-expect-error
+      defer.forward = wrapped(...args, (error: QuizCallbackError, results: R) =>
+        error ? defer.reject(error) : defer.resolve(results))
 
-        return defer as any
-      }
+      return defer as any
+    }
 }
 
 export type {
