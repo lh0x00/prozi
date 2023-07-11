@@ -1,0 +1,7 @@
+# Directory types are ignored.
+node_modules
+build
+dist
+
+# Directory hidden are ignored.
+.yarn

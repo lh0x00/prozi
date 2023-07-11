@@ -1,0 +1,43 @@
+{
+  "name": "quiz",
+  "version": "1.0.0",
+  "description": "a tool that supports using Promise better than ever",
+  "author": "Lam Hieu <lamhieu.vk@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "source": "./src/index.ts",
+  "exports": {
+    "require": "./dist/index.js",
+    "default": "./dist/index.modern.js"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.module.js",
+  "unpkg": "./dist/index.umd.js",
+  "scripts": {
+    "build": "microbundle",
+    "dev": "microbundle watch",
+    "lint": "eslint --config .eslintrc.js '{src,src/**}/*.{md,js,jsx,ts,tsx,json}' --quiet",
+    "prettier": "prettier '{src,src/**}/*.{md,js,jsx,ts,tsx,json}'",
+    "format": "yarn prettier --write && yarn lint --fix"
+  },
+  "dependencies": {
+    "throat": "^6.0.2",
+    "to-fast-properties": "^3"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-config-prettier": "^8",
+    "eslint-config-standard-with-typescript": "^35",
+    "eslint-plugin-import": "^2",
+    "eslint-plugin-n": "^16",
+    "eslint-plugin-promise": "^6",
+    "eslint-plugin-react-hooks": "^4",
+    "eslint-plugin-simple-import-sort": "^10",
+    "eslint-plugin-sort-destructure-keys": "^1",
+    "eslint-plugin-typescript-sort-keys": "2",
+    "microbundle": "^0.15.1",
+    "prettier": "^2",
+    "typescript": "^4.9.5",
+    "utility-types": "^3.10.0"
+  }
+}

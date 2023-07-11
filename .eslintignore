@@ -1,0 +1,17 @@
+# Directory types are ignored.
+node_modules
+build
+dist
+
+# Directory hidden are ignored.
+.yarn
+
+# Unsupported extensions files.
+**/*.json
+**/*.css
+**/*.scss
+**/*.less
+**/*.md
+**/*.jpg
+**/*.png
+**/*.svg
