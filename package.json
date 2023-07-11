@@ -1,15 +1,11 @@
 {
   "name": "prozi",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "a tool that supports using Promise better than ever",
   "author": "Lam Hieu <lamhieu.vk@gmail.com>",
   "license": "MIT",
   "private": false,
   "source": "./src/index.ts",
-  "exports": {
-    "require": "./dist/index.js",
-    "default": "./dist/index.modern.js"
-  },
   "main": "./dist/index.js",
   "module": "./dist/index.module.js",
   "unpkg": "./dist/index.umd.js",
