@@ -11,3 +11,9 @@ export {
   type QuizQueueItem,
   type QuizThroatOptions,
 } from './Quiz'
+export {
+  default as fastObjectProperties, 
+} from './utilities/fastObjectProperties'
+export {
+  default as throat, 
+} from './utilities/throat'

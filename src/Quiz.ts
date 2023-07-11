@@ -153,9 +153,7 @@ class Quiz {
     )
   }
 
-  static async from<
-    T extends Record<string, Promise<any>>,
-  >(
+  static async from<T extends Record<string, Promise<any>>>(
     promises: T,
   ): Promise<{
     [K in keyof T]: PromiseType<T[K]>
@@ -292,8 +290,9 @@ class Quiz {
     <I extends any[], R>(wrapped: QuizFunctionWithCallback<I, R>) =>
     async (...args: I): Promise<R> =>
       new Promise((resolve, reject) => {
-        wrapped(...args, (error: QuizCallbackError, results: R) =>
-        { error ? reject(error) : resolve(results) })
+        wrapped(...args, (error: QuizCallbackError, results: R) => {
+          error ? reject(error) : resolve(results)
+        })
       })
 
   static deferify =
