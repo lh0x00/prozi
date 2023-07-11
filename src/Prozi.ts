@@ -299,11 +299,27 @@ class Prozi {
       const defer = Prozi.defer<R>()
 
       // @ts-expect-error
-      defer.forward = wrapped(...args, (error: ProziCallbackError, results: R) =>
-        error ? defer.reject(error) : defer.resolve(results))
+      defer.forward = wrapped(
+        ...args,
+        (error: ProziCallbackError, results: R) =>
+          error ? defer.reject(error) : defer.resolve(results),
+      )
 
       return defer as any
     }
+
+  // eslint-disable-next-line @typescript-eslint/promise-function-async
+  static idbify<T extends unknown>(
+    request: any,
+    options?: ProziPromiseOptions,
+  ): EnhancedPromise<T> {
+    const defered = Prozi.defer<T>(options)
+
+    request.onsuccess = () => defered.resolve(request.result)
+    request.onerror = (error: Error) => defered.reject(error)
+
+    return defered.promise
+  }
 }
 
 export type {
