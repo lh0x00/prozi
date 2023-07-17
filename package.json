@@ -1,6 +1,6 @@
 {
   "name": "prozi",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "a tool that supports using Promise better than ever",
   "author": "Lam Hieu <lamhieu.vk@gmail.com>",
   "license": "MIT",
@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "throat": "^6",
-    "to-fast-properties": "^3"
+    "to-fast-properties": "^3",
+    "utility-types": "^3"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5",
@@ -34,7 +35,6 @@
     "eslint-plugin-typescript-sort-keys": "2",
     "microbundle": "^0.15.1",
     "prettier": "^2",
-    "typescript": "^4.9.5",
-    "utility-types": "^3.10.0"
+    "typescript": "^4.9.5"
   }
 }
