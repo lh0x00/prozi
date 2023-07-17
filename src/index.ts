@@ -12,6 +12,7 @@ export {
   type ProziQueueItem,
   type ProziThroatOptions,
 } from './Prozi'
+export * from './types'
 export {
   default as fastObjectProperties, 
 } from './utilities/fastObjectProperties'
