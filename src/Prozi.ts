@@ -311,11 +311,16 @@ class Prozi {
   // eslint-disable-next-line @typescript-eslint/promise-function-async
   static idbify<T extends unknown>(
     request: any,
-    options?: ProziPromiseOptions,
+    options?: ProziPromiseOptions & { hosted?: boolean },
   ): EnhancedPromise<T> {
     const defered = Prozi.defer<T>(options)
 
-    request.onsuccess = () => defered.resolve(request.result)
+    if (options?.hosted) {
+      request.onupgradeneeded = () => defered.resolve(request.result)
+    } else {
+      request.onsuccess = () => defered.resolve(request.result)
+    }
+
     request.onerror = (error: Error) => defered.reject(error)
 
     return defered.promise
