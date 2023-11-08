@@ -246,8 +246,10 @@ class Prozi {
           timer = -1 as any
         }
 
-        defered.promise.finally(() => {
-          defered.flush()
+        Promise.resolve().then(() => {
+          defered.promise.finally(() => {
+            defered.flush()
+          })
         })
       }
     })
