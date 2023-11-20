@@ -119,8 +119,10 @@ class Prozi {
       ...options,
     }
 
-    if (opts.concurrency <= 0) {
-      throw new Error('Prozi throat required concurrency value is greater 0.')
+    if (opts.concurrency < 0) {
+      throw new Error(
+        'Prozi throat required concurrency value is greater or equals 0.',
+      )
     }
 
     return Prozi.map(list, task, opts)
