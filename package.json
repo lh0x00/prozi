@@ -1,6 +1,6 @@
 {
   "name": "prozi",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "a tool that supports using Promise better than ever",
   "author": "Lam Hieu <lamhieu.vk@gmail.com>",
   "license": "MIT",
